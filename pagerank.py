@@ -161,7 +161,7 @@ class WebGraph():
 
                 # Add the matrix multiplication result and secondTerm
                 # Take the transpose of xprev^T times P since we want the first matrix to be multiplied be sparse
-                x = torch.sparse.addmm(secondTerm.t(), self.P.t(), alpha*xprev, beta = 1, alpha=alpha)
+                x = torch.sparse.addmm(secondTerm.t(), self.P.t(), xprev, alpha=alpha)
 
                 # output debug information
                 residual = torch.norm(x-xprev)
