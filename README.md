@@ -485,9 +485,6 @@ Your goal should be to discover what topics that www.lawfareblog.com considers t
    Task 1, part 1:
    ```
    $ python3 pagerank.py --data=data/small.csv.gz --verbose
-   ```
-
-   ```
     DEBUG:root:i=0 residual=0.2869156002998352
     DEBUG:root:i=1 residual=0.17673587799072266
     DEBUG:root:i=2 residual=0.11748470366001129
