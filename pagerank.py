@@ -134,6 +134,15 @@ class WebGraph():
                 x0 = torch.unsqueeze(x0,1)
             x0 /= torch.norm(x0)
 
+            # initialize a matrix of all ones nx1
+            a = torch.ones([n, 1])  
+
+            # Get indices of non sparse rows
+            not_sparse_indices = torch.sparse.sum(self.P, 1).indices()
+
+            # Set values at non sparse indices to zero
+            a[not_sparse_indices] = 0
+
             # main loop
             xprev = x0
             x = xprev.detach().clone()
@@ -141,10 +150,18 @@ class WebGraph():
                 xprev = x.detach().clone()
 
                 # compute the new x vector using Eq (5.1)
-                # FIXME: Task 1
+                # Task 1
                 # HINT: this can be done with a single call to the `torch.sparse.addmm` function,
                 # but you'll have to read the code above to figure out what variables should get passed to that function
                 # and what pre/post processing needs to be done to them
+
+                        
+                # Calculating the second term in the power method equation
+                secondTerm = (alpha*xprev.t()@a + (1 - alpha)) * v.t()
+
+                # Add the matrix multiplication result and secondTerm
+                # Take the transpose of xprev^T times P since we want the first matrix to be multiplied be sparse
+                x = torch.sparse.addmm(secondTerm.t(), self.P.t(), alpha*xprev, beta = 1, alpha=alpha)
 
                 # output debug information
                 residual = torch.norm(x-xprev)
