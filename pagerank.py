@@ -104,6 +104,10 @@ class WebGraph():
 
         else:
             v = torch.zeros(n)
+            for i in range(n):
+                url = self._index_to_url(i)
+                if url_satisfies_query(url,query):
+                    v[i] = 1
             # FIXME: implement Task 2
         
         v_sum = torch.sum(v)
